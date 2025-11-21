@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Der Tempel der Wertschätzung</title>
+    <style>
+        :root {
+            --primary: #5D7A68; /* Salbei */
+            --primary-dark: #4a6354;
+            --accent: #D4C4A8; /* Sandstein */
+            --text: #2c3e50;
+            --bg: #faf9f6;
+            --highlight: #fff59d;
+            --white: #ffffff;
+            --roof-color: #8c7b66; /* Dunkleres Holz/Stein für das Dach */
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            line-height: 1.8;
+        }
+
+        header {
+            text-align: center;
+            padding: 2rem 1rem;
+            background-color: white;
+            border-bottom: 1px solid #eee;
+        }
+
+        header h1 { margin: 0; font-size: 1.8rem; color: var(--primary); letter-spacing: 1px; }
+        header p { font-style: italic; color: #888; margin-top: 0.5rem; font-size: 0.9rem; }
+
+        main {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 20px;
+        }
+
+        /* --- DAS DACH --- */
+        .temple-roof {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--roof-color);
+            color: var(--white);
+            text-align: center;
+            padding: 1.5rem 0;
+            border-radius: 4px 4px 0 0;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            z-index: 10;
+            /* Leichte Trapezform andeuten */
+            clip-path: polygon(2% 0, 98% 0, 100% 100%, 0% 100%);
+        }
+
+        .roof-text {
+            font-size: 2rem;
+            letter-spacing: 8px;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+
+        /* --- SÄULEN CONTAINER --- */
+        .pillars-container {
+            display: flex;
+            justify-content: space-between; /* Verteilt Säulen gleichmäßig unter dem Dach */
+            gap: 10px; 
+            margin: 0 auto 3rem auto;
+            height: 350px;
+            max-width: 880px; /* Etwas schmaler als das Dach */
+            padding: 0 10px; /* Abstand zum Rand des Daches */
+        }
+
+        .pillar {
+            height: 100%; 
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end; 
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .pillar-body {
+            width: 75%; /* Etwas schlanker für eleganteren Look */
+            height: 80%; 
+            background: linear-gradient(to right, #e0ded6, #fdfbf7, #e0ded6);
+            border: 1px solid #ccc;
+            border-top: none; /* Verbindet sich optisch mit Kapitell */
+            box-shadow: 5px 0 15px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Kapitell (Oberer Teil) */
+        .pillar-cap {
+            width: 90%;
+            height: 25px;
+            background: linear-gradient(to bottom, var(--accent), #bda685);
+            border-radius: 2px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 2;
+        }
+
+        /* Basis (Unterer Teil) */
+        .pillar-base {
+            width: 95%;
+            height: 30px;
+            background: linear-gradient(to bottom, var(--primary), var(--primary-dark));
+            border-radius: 2px;
+            margin-top: -2px;
+            z-index: 3;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.1) inset;
+        }
+
+        .pillar-text {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            transform: rotate(180deg);
+            font-weight: bold;
+            color: #888;
+            letter-spacing: 3px;
+            font-family: sans-serif;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            pointer-events: none;
+            transition: color 0.3s;
+        }
+
+        /* Interaktion */
+        .pillar:hover .pillar-body {
+            height: 85%;
+            background: linear-gradient(to right, #eaeaea, #ffffff, #eaeaea);
+        }
+        .pillar:hover .pillar-text { color: #555; }
+
+        .pillar.active .pillar-body {
+            height: 100%; 
+            background: linear-gradient(to right, #e8dcc6, #fffdf5, #e8dcc6); /* Golden/Warm */
+            border-color: var(--accent);
+        }
+        .pillar.active .pillar-cap { background: var(--primary); }
+        .pillar.active .pillar-text { color: var(--primary-dark); }
+
+        /* --- CONTENT BEREICH --- */
+        #info-area {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+            display: none; /* Initial ausgeblendet */
+        }
+
+        #info-area.visible {
+            display: grid; /* Wieder einblenden */
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Theorie Box */
+        .theory-box {
+            background-color: var(--white);
+            border-left: 5px solid var(--primary);
+            padding: 2rem;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        }
+
+        /* Praxis Box */
+        .practice-box {
+            background-color: #eef5f1; /* Leichtes Grün für Praxis */
+            border: 2px dashed var(--primary);
+            padding: 2rem;
+            border-radius: 12px;
+            position: relative;
+        }
+
+        .practice-label {
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: var(--primary);
+            color: white;
+            padding: 2px 12px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 12px;
+        }
+
+        h2 { color: var(--primary); margin-top: 0; }
+        h3 { color: var(--primary-dark); margin-top: 0; font-size: 1.2rem; }
+        
+        mark {
+            background-color: var(--highlight);
+            color: #333;
+            padding: 0 4px;
+            border-radius: 2px;
+        }
+
+        /* Welcome Message (initial sichtbar) */
+        #welcome-msg {
+            text-align: center;
+            padding: 4rem;
+            color: #888;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            background: #fff;
+        }
+
+        @media (max-width: 700px) {
+            .pillars-container { height: auto; flex-direction: column; gap: 15px; max-width: 100%; }
+            .temple-roof { border-radius: 0; clip-path: none; }
+            .pillar { height: 60px; width: 100%; flex-direction: row; }
+            .pillar-body { width: 100%; height: 100% !important; writing-mode: horizontal-tb; border-left: 5px solid var(--accent); }
+            .pillar-text { writing-mode: horizontal-tb; transform: none; padding-left: 20px; }
+            .pillar-cap, .pillar-base { display: none; }
+            .pillar.active .pillar-body { border-left-color: var(--primary); }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Anselm Grüns Schule der Menschlichkeit</h1>
+        <p>Ein interaktives Modell</p>
+    </header>
+
+    <main>
+        
+        <div class="temple-roof">
+            <span class="roof-text">Wertschätzung</span>
+        </div>
+
+        <div class="pillars-container">
+            <div class="pillar" onclick="updateView(0)">
+                <div class="pillar-cap"></div>
+                <div class="pillar-body"><span class="pillar-text">Aufmerksamkeit</span></div>
+                <div class="pillar-base"></div>
+            </div>
+            <div class="pillar" onclick="updateView(1)">
+                <div class="pillar-cap"></div>
+                <div class="pillar-body"><span class="pillar-text">Respekt</span></div>
+                <div class="pillar-base"></div>
+            </div>
+            <div class="pillar" onclick="updateView(2)">
+                <div class="pillar-cap"></div>
+                <div class="pillar-body"><span class="pillar-text">Höflichkeit</span></div>
+                <div class="pillar-base"></div>
+            </div>
+            <div class="pillar" onclick="updateView(3)">
+                <div class="pillar-cap"></div>
+                <div class="pillar-body"><span class="pillar-text">Toleranz</span></div>
+                <div class="pillar-base"></div>
+            </div>
+            <div class="pillar" onclick="updateView(4)">
+                <div class="pillar-cap"></div>
+                <div class="pillar-body"><span class="pillar-text">Empathie</span></div>
+                <div class="pillar-base"></div>
+            </div>
+        </div>
+
+        <div id="welcome-msg">
+            <h2>Das Fundament stärken</h2>
+            <p>Klicken Sie auf eine der Säulen, um zu erfahren, wie sie das Dach der Wertschätzung trägt <br>und wie Sie diese Haltung heute konkret üben können.</p>
+        </div>
+
+        <div id="info-area">
+            
+            <article class="theory-box">
+                <h2 id="theory-title">Titel</h2>
+                <p id="theory-text">Text...</p>
+            </article>
+
+            <aside class="practice-box">
+                <span class="practice-label">Praxis-Transfer</span>
+                <h3 id="practice-title">Übung</h3>
+                <p id="practice-text">Übungstext...</p>
+            </aside>
+
+        </div>
+
+    </main>
+
+    <script>
+        // Datenstruktur: Enthält jetzt Theorie UND Praxis in einem Objekt
+        const data = [
+            {
+                title: "1. Aufmerksamkeit",
+                text: `Aufmerksamkeit ist die Pforte zur Wertschätzung. Anselm Grün beschreibt sie als die Kunst, <mark>ganz im Augenblick zu sein</mark>. Oft sind wir körperlich anwesend, aber geistig schon beim nächsten Termin. Wahre Aufmerksamkeit bedeutet, das "Grundrauschen" der eigenen Gedanken abzuschalten. <br><br>Es ist das Geschenk der Zeit. Wenn ich jemandem aufmerksam zuhöre, sage ich ihm ohne Worte: <mark>"Du bist mir wichtig genug, dass ich dir meine Lebenszeit widme."</mark>`,
+                exTitle: "👁️ Die 5-Minuten-Regel",
+                exText: "Legen Sie bei Ihrem nächsten Gespräch heute das Smartphone bewusst außer Sichtweite (nicht nur auf den Tisch, sondern weg). Schenken Sie Ihrem Gegenüber für 5 Minuten <mark>ungeteilten Blickkontakt</mark>. Unterbrechen Sie nicht."
+            },
+            {
+                title: "2. Respekt",
+                text: `Das lateinische Wort <em>respicere</em> bedeutet "zurückschauen" oder "jemanden berücksichtigen". Respekt ist die Haltung, die <mark>Distanz wahrt, um dem anderen Raum zu geben</mark>. Respektlosigkeit ist oft übergriffig. <br><br>Respekt bedeutet anzuerkennen, dass im anderen ein <mark>geheimnisvoller Kern</mark> wohnt, über den ich nicht verfügen kann. Egal welche Leistung jemand erbringt oder welchen sozialen Status er hat: Die Würde des Menschen ist unantastbar.`,
+                exTitle: "🙏 Der respektvolle Gruß",
+                exText: "Grüßen Sie heute jemanden, den Sie sonst übersehen (die Reinigungskraft, den Busfahrer, den Kassierer), genauso herzlich und aufmerksam wie Ihren Vorgesetzten oder besten Freund. Machen Sie sich dabei innerlich bewusst: <mark>Dieser Mensch trägt die gleiche Würde wie ich.</mark>"
+            },
+            {
+                title: "3. Höflichkeit",
+                text: `Höflichkeit ist der "Schmierstoff", der verhindert, dass Menschen aneinander reiben. Sie ist <mark>ritualisierte Liebe</mark> und bildet einen <mark>Schutzraum für die Seele</mark>. <br><br>Wenn wir höflich sind, dämpfen wir unsere eigenen Launen. Eine freundliche Begrüßung oder ein Dankeschön sind Signale: "Ich sehe dich und ich nehme Rücksicht auf dich." Ohne diese Säule verroht der Umgang.`,
+                exTitle: "🤝 Die Kraft der drei Worte",
+                exText: "Nutzen Sie heute bewusst und häufiger als sonst die Worte 'Bitte', 'Danke' und 'Entschuldigung'. Halten Sie jemandem die Tür auf. Beobachten Sie, wie diese <mark>kleinen Rituale die Atmosphäre sofort weicher machen</mark>."
+            },
+            {
+                title: "4. Toleranz",
+                text: `Toleranz kommt von <em>tolerare</em> (ertragen). Es heißt nicht, alles gut zu finden, sondern <mark>die Spannung auszuhalten</mark>, dass der andere anders denkt und lebt. <br><br>Toleranz ist die innere Größe, das Urteil zurückzuhalten und dem anderen <mark>das Recht auf seinen eigenen Weg</mark> zuzugestehen. Sie verhindert, dass aus Meinungsverschiedenheiten Feindschaften werden.`,
+                exTitle: "⚖️ Das innere 'Stopp'",
+                exText: "Wenn jemand heute eine Meinung äußert, die Sie stört oder ärgert: Atmen Sie tief durch. Sagen Sie innerlich 'Stopp' zu Ihrem Gegenargument. Denken Sie stattdessen: 'Er sieht es anders, und <mark>das darf er</mark>.' Lassen Sie es einfach stehen."
+            },
+            {
+                title: "5. Empathie",
+                text: `Empathie ist die Fähigkeit, die Welt <mark>mit den Augen des anderen zu sehen</mark>. Es ist der Schritt heraus aus dem eigenen Ego-Zentrum. <br><br>Während Mitleid oft von oben herab geschieht, ist Empathie ein 'Mit-Fühlen' auf Augenhöhe. Ich mache mich innerlich leer, um den Schmerz oder die Freude des anderen in mir nachklingen zu lassen. Nur so entsteht <mark>Herzensverbindung</mark>.`,
+                exTitle: "❤️ Die 'Wirklich'-Frage",
+                exText: "Fragen Sie heute einen Kollegen oder Freund: 'Wie geht es dir?' – Wenn die Standardantwort kommt, fragen Sie freundlich nach: 'Wie geht es dir *wirklich*?' Und dann hören Sie nur zu, um zu <mark>fühlen, was der andere fühlt</mark>, ohne Ratschläge zu geben."
+            }
+        ];
+
+        function updateView(index) {
+            const contentEntry = data[index];
+            const welcome = document.getElementById('welcome-msg');
+            const infoArea = document.getElementById('info-area');
+            const pillars = document.querySelectorAll('.pillar');
+
+            // 1. Säulen Animation
+            pillars.forEach(p => p.classList.remove('active'));
+            pillars[index].classList.add('active');
+
+            // 2. Welcome Nachricht ausblenden (falls noch da)
+            welcome.style.display = 'none';
+
+            // 3. Fade Out Effekt für Info-Area
+            infoArea.classList.remove('visible');
+
+            // 4. Inhalt tauschen und einblenden
+            setTimeout(() => {
+                // Theorie füllen
+                document.getElementById('theory-title').innerText = contentEntry.title;
+                document.getElementById('theory-text').innerHTML = contentEntry.text;
+
+                // Praxis füllen
+                document.getElementById('practice-title').innerText = contentEntry.exTitle;
+                document.getElementById('practice-text').innerHTML = contentEntry.exText;
+
+                // Einblenden
+                infoArea.style.display = 'grid'; // Sicherstellen, dass es im Layout ist
+                // Kleiner Timeout für CSS Transition nötig nach display:grid
+                setTimeout(() => {
+                    infoArea.classList.add('visible');
+                }, 50);
+                
+            }, 300);
+        }
+    </script>
+
+</body>
+</html>
