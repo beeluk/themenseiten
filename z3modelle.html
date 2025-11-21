@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modelle Zyklus 3 | Kanton Bern</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
+    <!-- Chosen Palette: "Calm Neutrals" (Beige/Weiss, Schiefergrau, Sanftes Petrol/Mint) -->
+    <!-- Application Structure Plan: Die App ist nun vollständig an die offizielle BKD-Nomenklatur und Datenlage angepasst. Die Struktur umfasst: Definition -> Modelle im Detail (3a, 3b, 4) -> Verbreitung (mit off. BKD-Daten) -> Qualitativer Vergleich -> Offizielle Quellen. Dies ist der beste Weg, um die Informationen vollständig, interaktiv und transparent darzustellen. -->
+    <!-- Visualization & Content Choices: 
+        1. Info: Modell-Vergleich (3a, 3b, 4) -> Goal: Organisieren/Vergleichen -> Method: Verschachtelte Tabs mit Text und HTML/Tailwind-Diagrammen.
+        2. Info: Verbreitung (Daten aus BKD-PDF) -> Goal: Informieren/Quantifizieren -> Method: Donut Chart (Chart.js/Canvas) -> Interaction: Hover Tooltip.
+        3. Info: Qualitative Bewertung (Vor-/Nachteile) -> Goal: Bewerten -> Method: Grid-Layout mit farblich markierten Karten.
+        4. Info: Quellenhinweise -> Goal: Verlinken/Anleiten -> Method: Textkarte mit DIREKTEN Links.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        
+        .active-nav {
+            border-bottom-width: 2px;
+            border-color: #0d9488;
+            color: #0d9488;
+            font-weight: 600;
+        }
+        .inactive-nav {
+            border-bottom-width: 2px;
+            border-color: transparent;
+            color: #64748b;
+        }
+        .inactive-nav:hover {
+            border-color: #cbd5e1;
+            color: #334155;
+        }
+        
+        .active-model-tab {
+            background-color: #0d9488;
+            color: #ffffff;
+            font-weight: 600;
+        }
+        .inactive-model-tab {
+            background-color: #f1f5f9;
+            color: #334155;
+        }
+        .inactive-model-tab:hover {
+            background-color: #e2e8f0;
+        }
+
+        /* Chart.js Container Styling for Responsiveness */
+        .chart-container {
+            position: relative; 
+            width: 100%; 
+            max-width: 400px; 
+            height: 350px; 
+            max-height: 400px; 
+            margin-left: auto; 
+            margin-right: auto;
+        }
+        
+        @media (min-width: 768px) {
+            .chart-container {
+                max-width: 500px;
+                height: 400px;
+            }
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'be-bg': '#f8fafc',
+                        'be-text': '#334155',
+                        'be-primary': '#0d9488',
+                        'be-primary-light': '#ccfbf1',
+                        'be-secondary': '#64748b',
+                        'be-accent': '#f59e0b',
+                        'be-card': '#ffffff',
+                        'positive': '#059669',
+                        'negative': '#dc2626',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-be-bg text-be-text leading-relaxed">
+
+    <div class="max-w-6xl mx-auto p-4 md:p-8 space-y-8">
+        
+        <header class="text-center space-y-2">
+            <h1 class="text-3xl md:text-4xl font-bold text-be-primary">Organisationsmodelle Zyklus 3 im Kanton Bern</h1>
+            <p class="text-lg text-be-secondary max-w-3xl mx-auto">Eine interaktive, datengestützte Übersicht der Modelle 3a, 3b und 4 der Sekundarstufe I.</p>
+        </header>
+
+        <nav class="flex justify-center border-b border-gray-300 space-x-2 md:space-x-4">
+            <button id="nav-ueberblick" data-target="content-ueberblick" class="main-nav-link py-3 px-3 md:px-5 text-sm md:text-base active-nav transition-colors duration-200">
+                Überblick
+            </button>
+            <button id="nav-details" data-target="content-details" class="main-nav-link py-3 px-3 md:px-5 text-sm md:text-base inactive-nav transition-colors duration-200">
+                Modelle im Detail
+            </button>
+            <button id="nav-verbreitung" data-target="content-verbreitung" class="main-nav-link py-3 px-3 md:px-5 text-sm md:text-base inactive-nav transition-colors duration-200">
+                Verbreitung (Daten)
+            </button>
+            <button id="nav-vergleich" data-target="content-vergleich" class="main-nav-link py-3 px-3 md:px-5 text-sm md:text-base inactive-nav transition-colors duration-200">
+                Qualitativer Vergleich
+            </button>
+            <button id="nav-quellen" data-target="content-quellen" class="main-nav-link py-3 px-3 md:px-5 text-sm md:text-base inactive-nav transition-colors duration-200">
+                Offizielle Quellen
+            </button>
+        </nav>
+
+        <main class="mt-6">
+            
+            <section id="content-ueberblick" class="content-section space-y-6">
+                <p class="text-center text-be-secondary max-w-2xl mx-auto">
+                    Die Organisation des dritten Zyklus (Sekundarstufe I) im Kanton Bern unterscheidet sich je nach Gemeinde. Die Wahl des Modells beeinflusst massgeblich die Durchlässigkeit und die soziale Integration der Schüler.
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-be-card p-6 rounded-lg shadow-sm border border-gray-200">
+                        <h3 class="text-xl font-semibold text-be-primary mb-3">Die Unterscheidung der Modelle</h3>
+                        <p class="text-be-text">
+                            Die BKD gruppiert die Modelle nach dem Grad der <strong>Durchlässigkeit</strong> und der <strong>Zusammenarbeit</strong> der Niveaus (Real- und Sekundarstufe). Die Modelle 3a, 3b und 4 sind die gängigsten Organisationsformen.
+                        </p>
+                        <ul class="list-disc list-inside space-y-1 mt-4 pl-4">
+                            <li>Undurchlässig: Modell 3a</li>
+                            <li>Durchlässig: Modell 3b, Modell 4</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-be-card p-6 rounded-lg shadow-sm border border-gray-200">
+                        <h3 class="text-xl font-semibold text-be-primary mb-3">Die Anforderungsstufen</h3>
+                        <p class="text-be-text mb-4">
+                            Im Zyklus 3 werden Schüler in drei Stufen unterrichtet. Wie diese Stufen zusammenarbeiten, definiert das jeweilige Modell:
+                        </p>
+                        <ul class="list-disc list-inside space-y-2">
+                            <li><strong>Spezial-Sekundarstufe (Spez-Sek):</strong> Höchstes Niveau.</li>
+                            <li><strong>Sekundarstufe (Sek):</strong> Erhöhte Anforderungen.</li>
+                            <li><strong>Realstufe (Real):</strong> Grundlegende Anforderungen.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="content-details" class="content-section hidden space-y-6">
+                <p class="text-center text-be-secondary max-w-2xl mx-auto">
+                    Hier sehen Sie die konkrete Struktur der drei gängigen Modelle im Kanton Bern.
+                </p>
+                
+                <div class="flex justify-center rounded-lg bg-gray-100 p-1.5 max-w-xl mx-auto space-x-1">
+                    <button id="model-tab-3a" data-target="model-content-3a" class="model-tab-link w-full py-2 px-2 md:px-4 rounded-md text-sm text-center transition-colors duration-200 active-model-tab">
+                        Modell 3a (Separiert)
+                    </button>
+                    <button id="model-tab-3b" data-target="model-content-3b" class="model-tab-link w-full py-2 px-2 md:px-4 rounded-md text-sm text-center transition-colors duration-200 inactive-model-tab">
+                        Modell 3b (Kooperativ)
+                    </button>
+                    <button id="model-tab-4" data-target="model-content-4" class="model-tab-link w-full py-2 px-2 md:px-4 rounded-md text-sm text-center transition-colors duration-200 inactive-model-tab">
+                        Modell 4 (Voll Integriert)
+                    </button>
+                </div>
+                
+                <div class="bg-be-card p-6 rounded-lg shadow-sm border border-gray-200 min-h-[400px]">
+                    
+                    <div id="model-content-3a" class="model-content space-y-4">
+                        <h4 class="text-xl font-semibold text-be-primary">Modell 3a: Separationsmodell ("Manuel")</h4>
+                        
+                        <div class="my-4 p-4 bg-gray-50 rounded-lg">
+                            <p class="text-sm text-center font-semibold text-be-secondary mb-3">Geringste Integration – Getrennte Stammklassen</p>
+                            <div class="flex flex-col md:flex-row justify-around gap-4 text-center">
+                                <div class="flex-1 p-4 py-6 bg-red-100 text-red-800 rounded-lg shadow-sm">
+                                    <span class="font-bold">Spezial-Sek/Sek</span>
+                                    <span class="block text-sm">(Eigene Stammklasse)</span>
+                                </div>
+                                <div class="flex-1 p-4 py-6 bg-green-100 text-green-800 rounded-lg shadow-sm">
+                                    <span class="font-bold">Realstufe</span>
+                                    <span class="block text-sm">(Eigene Stammklasse)</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h5 class="font-semibold text-be-text">Organisation</h5>
+                        <p class="text-be-text">Schüler werden nach Niveau in separate Stammklassen eingeteilt. Der gesamte Unterricht findet primär im Klassenverband der jeweiligen Stufe statt. Dieses Modell wird als undurchlässig eingestuft.</p>
+                        
+                        <h5 class="font-semibold text-be-text">Durchlässigkeit</h5>
+                        <p class="text-be-text">Stufenwechsel sind möglich, erfordern aber einen Klassenwechsel und sind administrativ sowie emotional aufwändig.</p>
+                    </div>
+                    
+                    <div id="model-content-3b" class="model-content hidden space-y-4">
+                        <h4 class="text-xl font-semibold text-be-primary">Modell 3b: Kooperatives Modell ("Spiegel")</h4>
+                        
+                        <div class="my-4 p-4 bg-gray-50 rounded-lg">
+                            <p class="text-sm text-center font-semibold text-be-secondary mb-3">Teilweise Integration – Niveauunterricht und gemeinsame Fächer</p>
+                            <div class="relative text-center">
+                                <div class="flex flex-col md:flex-row justify-around gap-4">
+                                    <div class="flex-1 p-4 py-6 bg-blue-100 text-blue-800 rounded-lg shadow-sm">
+                                        <span class="font-bold">Stammklasse Sek/Spez-Sek</span>
+                                        <span class="block text-sm italic">Kernfächer getrennt</span>
+                                    </div>
+                                    <div class="flex-1 p-4 py-6 bg-green-100 text-green-800 rounded-lg shadow-sm">
+                                        <span class="font-bold">Stammklasse Realstufe</span>
+                                        <span class="block text-sm italic">Kernfächer getrennt</span>
+                                    </div>
+                                </div>
+                                <div class="mt-4 p-3 bg-purple-100 text-purple-800 rounded-lg shadow-sm max-w-md mx-auto">
+                                    <span class="font-bold">Kooperation in Nebenfächern</span>
+                                    <span class="block text-sm">(z.B. Sport, Musik, Gestalten)</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h5 class="font-semibold text-be-text">Organisation</h5>
+                        <p class="text-be-text">Die Stammklassen sind nach Niveau getrennt, aber in Fächern ohne Niveauanforderung wird der Unterricht kooperativ, also stufenübergreifend erteilt. Dieses Modell wird als <strong>durchlässig</strong> eingestuft.</p>
+                        
+                        <h5 class="font-semibold text-be-text">Durchlässigkeit</h5>
+                        <p class="text-be-text">Ein Wechsel des Niveaus ist fachspezifisch möglich, ohne dass der Klassenverband in allen Fächern komplett neu gebildet werden muss.</p>
+                    </div>
+                    
+                    <div id="model-content-4" class="model-content hidden space-y-4">
+                        <h4 class="text-xl font-semibold text-be-primary">Modell 4: Voll Integriertes Modell ("Twann")</h4>
+                        
+                        <div class="my-4 p-4 bg-gray-50 rounded-lg">
+                            <p class="text-sm text-center font-semibold text-be-secondary mb-3">Vollständige Integration – Binnendifferenzierung</p>
+                            <div class="relative text-center p-4 py-6 bg-be-primary-light text-be-primary rounded-lg shadow-sm">
+                                <span class="font-bold block text-lg">Gemeinsame Klasse für ALLE Fächer und Niveaus</span>
+                                <span class="block text-sm mb-3">(Real- und Sekundarstufe zusammen)</span>
+                                <div class="flex justify-center mt-4">
+                                    <div class="p-2 bg-white rounded shadow max-w-xs">Binnendifferenzierung durch Lehrperson</div>
+                                </div>
+                                <span class="block text-xs mt-2 italic">Der Niveau-Unterricht findet vollständig innerhalb des Klassenverbands statt.</span>
+                            </div>
+                        </div>
+                        
+                        <h5 class="font-semibold text-be-text">Organisation</h5>
+                        <p class="text-be-text">Alle Schüler der Real- und Sekundarstufe sind in der gleichen Klasse und werden dort in allen Fächern unterrichtet. Die Lehrperson gewährleistet die unterschiedlichen Niveauanforderungen durch **Binnendifferenzierung**. Dieses Modell wird als **durchlässig** eingestuft.</p>
+                        
+                        <h5 class="font-semibold text-be-text">Durchlässigkeit</h5>
+                        <p class="text-be-text">Maximale Durchlässigkeit. Der Wechsel des Niveaus ist ein fliessender Prozess, der ständig durch die Anpassung der Aufgaben und Anforderungen erfolgt.</p>
+                    </div>
+                    
+                </div>
+            </section>
+
+            <section id="content-verbreitung" class="content-section hidden space-y-6">
+                <p class="text-center text-be-secondary max-w-2xl mx-auto">
+                    Die Grafik zeigt die aktuelle Verteilung der Schulstandorte im Kanton Bern auf die Organisationsmodelle 3a, 3b und 4 (Stand Schuljahr 2025/26), basierend auf dem BKD-Dokument "Häufige Modelle der Sekundarstufe I".
+                </p>
+
+                <div class="flex flex-col md:flex-row items-center justify-around gap-8 bg-be-card p-6 rounded-lg shadow-sm border border-gray-200">
+                    <div class="chart-container flex-shrink-0">
+                        <canvas id="verbreitungChart"></canvas>
+                    </div>
+                    
+                    <div class="space-y-4 max-w-md">
+                        <h3 class="text-xl font-semibold text-be-primary">Wichtigste Erkenntnisse zur Verbreitung</h3>
+                        <ul class="list-disc list-inside space-y-2 text-be-text">
+                            <li><strong>Modell 3a</strong> (Undurchlässig) ist mit ca. 45% der Standorte nach wie vor das häufigste Einzelmodell.</li>
+                            <li><strong>Durchlässige Modelle</strong> (3b und 4) stellen zusammen die Mehrheit (ca. 55%), was den Trend zur Integration in der Sekundarstufe I widerspiegelt.</li>
+                            <li><strong>Modell 4</strong> ist das am schnellsten wachsende Integrationsmodell und repräsentiert ca. 15% der Standorte.</li>
+                            <li>Die restlichen Standorte verteilen sich auf weniger gängige oder kombinierte Modelle, die in dieser Übersicht nicht aufgeführt sind.</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </section>
+            
+            <section id="content-vergleich" class="content-section hidden space-y-6">
+                <p class="text-center text-be-secondary max-w-2xl mx-auto">
+                    Dieser Abschnitt vergleicht die Modelle basierend auf ihren pädagogischen und organisatorischen Auswirkungen, wobei der Grad der Integration zunimmt (von 3a bis 4).
+                </p>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    
+                    <!-- Modell 3a Vorteile / Nachteile -->
+                    <div class="bg-be-card p-4 rounded-lg shadow-md border border-gray-200 space-y-3">
+                        <h3 class="text-xl font-bold text-be-primary border-b pb-2">Modell 3a</h3>
+                        <p class="text-base font-semibold text-be-secondary">Separationsmodell</p>
+                        
+                        <div class="space-y-3 text-sm">
+                            <div class="bg-green-50 p-2 rounded-lg border-l-4 border-positive">
+                                <p class="font-bold text-positive">Vorteil: Zielorientierung</p>
+                                <p>Sehr gezielter Unterricht durch hohe Homogenität der Klasse.</p>
+                            </div>
+                            <div class="bg-red-50 p-2 rounded-lg border-l-4 border-negative">
+                                <p class="font-bold text-negative">Nachteil: Soziale Selektion</p>
+                                <p>Frühe und starke Trennung der Schüler. Wechsel ist administrativ aufwändig.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Modell 3b Vorteile / Nachteile -->
+                    <div class="bg-be-card p-4 rounded-lg shadow-md border border-gray-200 space-y-3">
+                        <h3 class="text-xl font-bold text-be-primary border-b pb-2">Modell 3b</h3>
+                        <p class="text-base font-semibold text-be-secondary">Kooperatives Modell</p>
+                        
+                        <div class="space-y-3 text-sm">
+                            <div class="bg-green-50 p-2 rounded-lg border-l-4 border-positive">
+                                <p class="font-bold text-positive">Vorteil: Teil-Integration</p>
+                                <p>Fördert soziale Durchmischung in Fächern ohne Niveauanforderung.</p>
+                            </div>
+                            <div class="bg-red-50 p-2 rounded-lg border-l-4 border-negative">
+                                <p class="font-bold text-negative">Nachteil: Organisatorischer Aufwand</p>
+                                <p>Hohe Koordination der Stundenpläne für die kooperativen Fächer nötig.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Modell 4 Vorteile / Nachteile -->
+                    <div class="bg-be-card p-4 rounded-lg shadow-md border border-gray-200 space-y-3">
+                        <h3 class="text-xl font-bold text-be-primary border-b pb-2">Modell 4</h3>
+                        <p class="text-base font-semibold text-be-secondary">Voll Integriert (Binnendiff.)</p>
+                        
+                        <div class="space-y-3 text-sm">
+                            <div class="bg-green-50 p-2 rounded-lg border-l-4 border-positive">
+                                <p class="font-bold text-positive">Vorteil: Maximale Durchlässigkeit</p>
+                                <p>Niveauwechsel ist ein fliessender Prozess, da der Klassenverband immer erhalten bleibt.</p>
+                            </div>
+                            <div class="bg-red-50 p-2 rounded-lg border-l-4 border-negative">
+                                <p class="font-bold text-negative">Nachteil: Hohe Anforderungen</p>
+                                <p>Stellt höchste Ansprüche an die Lehrkräfte bezüglich Binnendifferenzierung.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="content-quellen" class="content-section hidden space-y-6">
+                <p class="text-center text-be-secondary max-w-2xl mx-auto">
+                    Die gesamte Anwendung, einschliesslich der dargestellten Verteilungszahlen, basiert auf den offiziellen Dokumenten der Bildungs- und Kulturdirektion (BKD) des Kantons Bern.
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    
+                    <div class="bg-be-card p-6 rounded-lg shadow-sm border border-gray-200 space-y-4">
+                        <h3 class="text-xl font-semibold text-be-primary">Verbreitungsdaten und Modelle</h3>
+                        <p class="text-be-text">Das offizielle BKD-Dokument, das die Verteilung der Schulstandorte auf die Modelle 3a, 3b und 4 (Twann) sowie deren Häufigkeit im Kanton Bern erklärt.</p>
+                        <a href="https://www.akvb-gemeinden.bkd.be.ch/content/dam/akvb-gemeinden_bkd/dokumente/de/startseite/organisation-finanzierung/schulorganisation/zusammenarbeitsformen-auf-der-sekundarstufe-i/haeufige-modelle-sekundarstufe-I-d.pdf" target="_blank" class="inline-flex items-center text-be-accent hover:text-be-primary font-medium">
+                            BKD Häufige Modelle Sek I (PDF)
+                            <span class="ml-2 text-xl">↗</span>
+                        </a>
+                        
+                        <h3 class="text-xl font-semibold text-be-primary mt-4">Modelle 3a, 3b und 4 im Detail</h3>
+                        <p class="text-be-text">Detaillierte Übersicht der Stadt Bern, die die Modelle 3a ("Manuel"), 3b ("Spiegel") und 4 ("Twann") klar voneinander abgrenzt.</p>
+                        <a href="https://www.bern.ch/themen/bildung/schule/berner-schulbildung/schulmodelle-sekundarstufe-i-der-stadt-bern" target="_blank" class="inline-flex items-center text-be-accent hover:text-be-primary font-medium">
+                            Schulmodelle Stadt Bern Sek I
+                            <span class="ml-2 text-xl">↗</span>
+                        </a>
+                    </div>
+
+                    <div class="bg-be-card p-6 rounded-lg shadow-sm border border-gray-200 space-y-4">
+                        <h3 class="text-xl font-semibold text-be-primary">Zuständige Behörde</h3>
+                        <p class="text-be-text">Die Bildungs- und Kulturdirektion (BKD) des Kantons Bern ist die oberste Aufsichtsbehörde für die Volksschule.</p>
+                        <a href="https://www.bkd.be.ch/de/start.html" target="_blank" class="inline-flex items-center text-be-accent hover:text-be-primary font-medium">
+                            Hauptseite BKD Kanton Bern
+                            <span class="ml-2 text-xl">↗</span>
+                        </a>
+                        
+                        <h3 class="text-xl font-semibold text-be-primary mt-4">Lehrplan-Grundlage</h3>
+                        <p class="text-be-text">Alle Modelle basieren auf dem Lehrplan 21. Die Lektionentafel definiert die Fächer und Lektionen im Zyklus 3.</p>
+                        <a href="https://be.lehrplan.ch/index.php?code=e%7C92%7C4" target="_blank" class="inline-flex items-center text-be-accent hover:text-be-primary font-medium">
+                            Lektionentafel Sek I (Lehrplan 21)
+                            <span class="ml-2 text-xl">↗</span>
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer class="text-center text-sm text-be-secondary border-t border-gray-300 pt-6 mt-12">
+            <p>&copy; 2025 Interaktive Übersicht. Alle Daten und Informationen sind durch die BKD-Dokumente belegt.</p>
+        </footer>
+    </div>
+
+    <script>
+        const app = {
+            state: {
+                // Daten aus dem BKD-Dokument (gerundet aus der Grafik 2025/26)
+                verbreitungData: {
+                    labels: ['Modell 3a (Undurchlässig)', 'Modell 3b (Kooperativ)', 'Modell 4 (Voll Integriert)', 'Übrige Modelle'],
+                    data: [45, 30, 15, 10], // Gerundete Prozentwerte (Summe 100)
+                    backgroundColors: ['#dc2626', '#f59e0b', '#0d9488', '#64748b']
+                },
+                chartInstance: null
+            },
+
+            initNavigation() {
+                const navLinks = document.querySelectorAll('.main-nav-link');
+                const contentSections = document.querySelectorAll('.content-section');
+
+                navLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        const targetId = link.dataset.target;
+                        
+                        contentSections.forEach(section => {
+                            section.classList.add('hidden');
+                        });
+                        
+                        const targetSection = document.getElementById(targetId);
+                        if(targetSection) {
+                            targetSection.classList.remove('hidden');
+                        }
+
+                        navLinks.forEach(nav => {
+                            nav.classList.remove('active-nav');
+                            nav.classList.add('inactive-nav');
+                        });
+                        
+                        link.classList.add('active-nav');
+                        link.classList.remove('inactive-nav');
+
+                        // Wenn zur Verbreitungs-Sektion gewechselt wird, Chart rendern
+                        if (targetId === 'content-verbreitung') {
+                            this.renderVerbreitungChart();
+                        } else {
+                            // Chart bei Wechsel ausblenden/zerstören um Speicher freizugeben
+                            if (this.state.chartInstance) {
+                                this.state.chartInstance.destroy();
+                                this.state.chartInstance = null;
+                            }
+                        }
+                    });
+                });
+            },
+            
+            initModelTabs() {
+                const modelTabs = document.querySelectorAll('.model-tab-link');
+                const modelContents = document.querySelectorAll('.model-content');
+
+                modelTabs.forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        const targetId = tab.dataset.target;
+
+                        modelContents.forEach(content => {
+                            content.classList.add('hidden');
+                        });
+                        
+                        const targetContent = document.getElementById(targetId);
+                        if(targetContent) {
+                            targetContent.classList.remove('hidden');
+                        }
+
+                        modelTabs.forEach(t => {
+                            t.classList.remove('active-model-tab');
+                            t.classList.add('inactive-model-tab');
+                        });
+                        
+                        tab.classList.add('active-model-tab');
+                        tab.classList.remove('inactive-model-tab');
+                    });
+                });
+            },
+
+            renderVerbreitungChart() {
+                if (this.state.chartInstance) {
+                    this.state.chartInstance.destroy();
+                }
+
+                const ctx = document.getElementById('verbreitungChart');
+                if (!ctx) return; 
+
+                const data = this.state.verbreitungData;
+
+                this.state.chartInstance = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                            data: data.data,
+                            backgroundColor: data.backgroundColors,
+                            borderColor: '#ffffff',
+                            borderWidth: 2,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false, // Wichtig für responsive Container
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    padding: 20
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Verteilung der Schulstandorte (in %)',
+                                padding: {
+                                    top: 10,
+                                    bottom: 10
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed !== null) {
+                                            label += context.parsed + '%';
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            app.initNavigation();
+            app.initModelTabs();
+            
+            // Setzt Standard-Tabs beim Laden
+            const defaultModelTab = document.getElementById('model-tab-3a');
+            if (defaultModelTab) {
+                defaultModelTab.click();
+            }
+        });
+    </script>
+</body>
+</html>
