@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>111 Random Acts of Kindness</title>
+    <style>
+        :root {
+            --primary: #FF9F1C;
+            --secondary: #2EC4B6;
+            --bg: #FDFFFC;
+            --text: #011627;
+            --card-bg: #FFFFFF;
+            --accent: #E71D36;
+            --info-bg: #E3F2FD;
+            --info-border: #2196F3;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 1rem auto 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        /* Info Box Style */
+        .info-box {
+            background-color: var(--info-bg);
+            border-left: 5px solid var(--info-border);
+            padding: 1.5rem;
+            border-radius: 5px;
+            margin-bottom: 2rem;
+        }
+
+        .info-box h3 {
+            margin-top: 0;
+            color: var(--info-border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .info-box p {
+            margin-bottom: 0;
+        }
+
+        /* Generator Section */
+        .generator-box {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .act-display {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--secondary);
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            border: 2px dashed #eee;
+            border-radius: 10px;
+        }
+
+        .btn {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .filters {
+            margin-bottom: 1rem;
+        }
+
+        select {
+            padding: 10px;
+            font-size: 1rem;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            background-color: white;
+            cursor: pointer;
+        }
+
+        /* List Section */
+        .list-section h2 {
+            border-bottom: 3px solid var(--primary);
+            display: inline-block;
+            margin-bottom: 1.5rem;
+            margin-right: 1rem;
+        }
+        
+        .list-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .act-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .act-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-left: 5px solid var(--secondary);
+            transition: transform 0.2s;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .act-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .category-tag {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: #888;
+            margin-bottom: 0.5rem;
+            display: block;
+            letter-spacing: 1px;
+        }
+
+        blockquote {
+            font-style: italic;
+            color: #666;
+            border-left: 4px solid var(--primary);
+            margin: 2rem 0;
+            padding-left: 1rem;
+            background: #f9f9f9;
+            padding: 1rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background: #f1f1f1;
+            margin-top: 3rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Glück schenken</h1>
+    <p>Oft sind es die kleinen Gesten, die anderen das Herz erwärmen.</p>
+</header>
+
+<div class="container">
+
+    <div class="info-box">
+        <h3>Was ist ein "Random Act of Kindness"?</h3>
+        <p>
+            Random Acts of Kindness (zufällige Taten der Freundlichkeit) sind freundliche Gesten, mit denen du einer anderen Person hilfst oder sie positiv beeinflusst. Es ist die Freundlichkeit gegenüber anderen, die sich auch auf das eigene Wohlbefinden positiv auswirkt.
+        </p>
+    </div>
+
+    <blockquote>
+        "Freundlichkeit ist eine der am meisten geschätzten Charaktereigenschaften der westlichen Welt."
+    </blockquote>
+
+    <div class="generator-box">
+        <h2>Deine gute Tat für heute</h2>
+        <div class="filters">
+            <label for="category-select">Generator-Kategorie: </label>
+            <select id="category-select">
+                <option value="all">Alle Kategorien (Überraschung)</option>
+                <option value="Fremde">Für Fremde</option>
+                <option value="Freunde">Für Freunde</option>
+                <option value="Umwelt">Für die Umwelt</option>
+                <option value="Arbeit">Bei der Arbeit</option>
+                <option value="Beziehung">In der Beziehung</option>
+                <option value="Kinder">Für Kinder</option>
+            </select>
+        </div>
+        
+        <div class="act-display" id="display-area">
+            Klicke auf den Button, um zu starten!
+        </div>
+        
+        <button class="btn" onclick="generateAct()">Zufällige Idee anzeigen</button>
+    </div>
+
+    <div class="list-section">
+        <div class="list-header">
+            <h2>Alle 111+ Ideen entdecken</h2>
+            <div class="filters" style="margin-bottom: 0;">
+                <label for="list-filter">Liste filtern: </label>
+                <select id="list-filter" onchange="renderList(this.value)">
+                    <option value="all">Alle anzeigen</option>
+                    <option value="Fremde">Für Fremde</option>
+                    <option value="Freunde">Für Freunde</option>
+                    <option value="Umwelt">Für die Umwelt</option>
+                    <option value="Arbeit">Bei der Arbeit</option>
+                    <option value="Beziehung">In der Beziehung</option>
+                    <option value="Kinder">Für Kinder</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="act-list" id="full-list">
+            </div>
+    </div>
+
+</div>
+
+<footer>
+    <p>Basierend auf "111+ Random Acts of Kindness".<br>
+    "Kindness is doing what you can, where you are, with what you have." - RAKtivist</p>
+</footer>
+
+<script>
+    // Datenbank aller Taten aus dem PDF
+    // Rechtschreibung: "ss" statt "ß"
+    const acts = [
+        // Fremde
+        { text: "Mache einem Fremden ein aufrichtiges Kompliment.", category: "Fremde" },
+        { text: "Halte die Türen für jemanden auf.", category: "Fremde" },
+        { text: "Lass am Kassenautomaten ein paar Münzen liegen.", category: "Fremde" },
+        { text: "Lass jemanden in der Schlange vor.", category: "Fremde" },
+        { text: "Gib deinen Sitzplatz im Bus an eine andere Person ab.", category: "Fremde" },
+        { text: "Koche ein Abendessen für eine bedürftige Familie.", category: "Fremde" },
+        { text: "Hinterlasse ermutigende Briefe an den Autos anderer.", category: "Fremde" },
+        { text: "Nimm an einer Spendenaktion teil.", category: "Fremde" },
+        { text: "Spende deine alte Kleidung.", category: "Fremde" },
+        { text: "Hilf einem älteren Menschen beim Einkaufen.", category: "Fremde" },
+        { text: "Zeige jemanden, der neu in deiner Nachbarschaft ist, deine Lieblingsorte.", category: "Fremde" },
+        { text: "Verbringe einen Tag in einem Obdachlosenheim.", category: "Fremde" },
+        { text: "Verteile an einem heissen Tag kalte Getränke an ältere Menschen.", category: "Fremde" },
+        { text: "Hilf einem Kind oder einer älteren Person über die Strasse.", category: "Fremde" },
+        { text: "Hinterlasse dem Kellner ein saftiges Trinkgeld.", category: "Fremde" },
+        { text: "Halte den Aufzug für jemanden auf.", category: "Fremde" },
+        { text: "Schicke Malbücher an kranke Kinder im Krankenhaus.", category: "Fremde" },
+        { text: "Hilf kranken Tieren, ein Zuhause zu finden.", category: "Fremde" },
+        { text: "Beschenke jemandem mit etwas Selbstgemachten.", category: "Fremde" },
+        { text: "Hinterlasse Kleingeld auf einem Wunschbrunnen.", category: "Fremde" },
+        { text: "Spende deine Haare nach einem Haarschnitt.", category: "Fremde" },
+        { text: "Gib deinen Regenschirm einem Fremden.", category: "Fremde" },
+        { text: "Kaufe deinem Kellner/ deiner Kellnerin ein Dessert.", category: "Fremde" },
+        { text: "Kaufe Lebensmittel für die Person hinter dir.", category: "Fremde" },
+        { text: "Verstecke kleine nette Botschaften an zufälligen Orten.", category: "Fremde" },
+        { text: "Löse ein extra U-Bahn-Ticket und lasse es im Ausgabefach liegen.", category: "Fremde" },
+        { text: "Hinterlasse online eine positive Bewertung für ein Restaurant.", category: "Fremde" },
+        { text: "Mache ein Kompliment zu einem Foto auf Social Media.", category: "Fremde" },
+        { text: "Schaufel den Schnee vom Bürgersteig in deiner Nachbarschaft.", category: "Fremde" },
+        { text: "Biete an, den Rasen für einen älteren Nachbarn zu mähen.", category: "Fremde" },
+        { text: "Gib deinen Sitzplatz im Flugzeug auf, damit ein Paar zusammensitzen kann.", category: "Fremde" },
+        { text: "Sprich auf einer Party mit jemandem, der niemanden zu kennen scheint.", category: "Fremde" },
+        { text: "Lade jemanden, der neu in der Stadt ist, zu einem Event ein.", category: "Fremde" },
+        { text: "Verbringen Zeit mit älteren Menschen in einem örtlichen Altersheim.", category: "Fremde" },
+        { text: "Spende unbenutzte Gegenstände für wohltätige Zwecke.", category: "Fremde" },
+        { text: "Packe ein Pflegeset (Zahnbürste, Socken) für Obdachlose.", category: "Fremde" },
+        { text: "Schicke eine E-Mail an eine ehemalige Lehrperson und danke ihr.", category: "Fremde" },
+        { text: "Hinterlasse einen Dankesbrief für deinen Postboten.", category: "Fremde" },
+        { text: "Mache eine doppelte Portion Essen für jemanden in Not.", category: "Fremde" },
+        { text: "Werde Organspender.", category: "Fremde" },
+        { text: "Schenke einer fremden Person ein Lächeln.", category: "Fremde" },
+        { text: "Spende Essen ans Tierheim.", category: "Fremde" },
+
+        // Freunde
+        { text: "Triff dich mit alten Freunden.", category: "Freunde" },
+        { text: "Biete einem Freund an, ihn nach Hause zu fahren.", category: "Freunde" },
+        { text: "Schenke einem Freund ein Buch, das dich inspiriert hat.", category: "Freunde" },
+        { text: "Schicke einem guten Freund einen Brief statt einer SMS.", category: "Freunde" },
+        { text: "Bringe einer Freundin, die ein Baby bekommen hat, Abendessen.", category: "Freunde" },
+        { text: "Bringe einem Freund ein kleines Geschenk mit.", category: "Freunde" },
+        { text: "Erinnere einen alten Freund an eine schöne gemeinsame Erfahrung.", category: "Freunde" },
+        { text: "Babysitte umsonst bei Freunden.", category: "Freunde" },
+        { text: "Schreibe eine handgeschriebene Dankeskarte.", category: "Freunde" },
+        { text: "Schreibe eine Liste mit Dingen, die du an einem Freund bewunderst.", category: "Freunde" },
+        { text: "Plane eine Überraschungsgeburtstagsfeier.", category: "Freunde" },
+        { text: "Sage einem Freund, was du an ihm besonders schätzt.", category: "Freunde" },
+        { text: "Stelle zwei Menschen vor, die sich gut verstehen würden.", category: "Freunde" },
+        { text: "Lade einen Freund zum Mittagessen ein.", category: "Freunde" },
+        { text: "Sag einem guten Freund Danke dafür, dass es ihn gibt.", category: "Freunde" },
+        { text: "Schicke Freunden eine Musikempfehlung.", category: "Freunde" },
+
+        // Umwelt
+        { text: "Sammle Müll am Strand oder im Wald auf.", category: "Umwelt" },
+        { text: "Fahre mit dem Fahrrad oder gehe zu Fuss zur Arbeit.", category: "Umwelt" },
+        { text: "Füttere die Tauben im Park.", category: "Umwelt" },
+        { text: "Recycle Dinge, die du auf der Strasse findest.", category: "Umwelt" },
+        { text: "Pflanze einen Baum oder säe eine Insektenwiese.", category: "Umwelt" },
+        { text: "Hebe Müll vom Boden auf und wirf ihn in den Müll.", category: "Umwelt" },
+        { text: "Bringe beim Einkaufen deine eigenen Tüten mit.", category: "Umwelt" },
+        { text: "Unterstütze regionale Geschäfte und Produzenten.", category: "Umwelt" },
+        { text: "Engagiere dich in einem urbanen Garten.", category: "Umwelt" },
+        { text: "Trenne deinen Müll sorgfältig.", category: "Umwelt" },
+        { text: "Giesse im Sommer Bäume, die mit Wassermangel kämpfen.", category: "Umwelt" },
+
+        // Arbeit
+        { text: "Sag deinen Kollegen Danke für ihre Arbeit.", category: "Arbeit" },
+        { text: "Spende einen Krankheitstag für Kollegen mit chronischer Krankheit.", category: "Arbeit" },
+        { text: "Sag deinem Chef, was du an ihm schätzt.", category: "Arbeit" },
+        { text: "Übernimm die Schicht eines Kollegen.", category: "Arbeit" },
+        { text: "Bringe zusätzliche Snacks für Kollegen mit.", category: "Arbeit" },
+        { text: "Schreibe eine Dankeskarte an einen Mitarbeiter.", category: "Arbeit" },
+        { text: "Lade die neue Kollegin zum Mittagessen ein.", category: "Arbeit" },
+        { text: "Erzähl deinem Chef von der grossartigen Arbeit deiner Mitarbeiter.", category: "Arbeit" },
+        { text: "Bring einem Mitarbeiter eine Tasse Kaffee.", category: "Arbeit" },
+        { text: "Hinterlasse einem Arbeitskollegen eine nette Botschaft.", category: "Arbeit" },
+        { text: "Backe Kekse oder einen Kuchen für alle.", category: "Arbeit" },
+        { text: "Biete an, jemandem Arbeit abzunehmen.", category: "Arbeit" },
+        { text: "Schicke eine E-Mail an einen Mentor/Förderer.", category: "Arbeit" },
+
+        // Beziehungen
+        { text: "Sag deinem Partner, was du an ihm liebst.", category: "Beziehung" },
+        { text: "Teile deine Beobachtungen über liebenswerte Kleinigkeiten.", category: "Beziehung" },
+        { text: "Mach deinem Partner Komplimente.", category: "Beziehung" },
+        { text: "Hilf deinem Partner, die Lebensmittel wegzuräumen.", category: "Beziehung" },
+        { text: "Kaufe deinem Partner etwas, das er sich gewünscht hat.", category: "Beziehung" },
+        { text: "Kümmere dich um Aufgaben, damit dein Partner entspannen kann.", category: "Beziehung" },
+        { text: "Hilf deinem Partner bei der Verwirklichung seiner Träume.", category: "Beziehung" },
+        { text: "Koche das Lieblingsgericht deines Partners.", category: "Beziehung" },
+        { text: "Nimm dir Zeit, wirklich zuzuhören.", category: "Beziehung" },
+        { text: "Sag Danke für Alltägliches.", category: "Beziehung" },
+        { text: "Plane ein Date.", category: "Beziehung" },
+        { text: "Gib deinem Partner eine kleine Massage.", category: "Beziehung" },
+        { text: "Schenke deinem Partner eine lange Umarmung.", category: "Beziehung" },
+        { text: "Schreibe kleine Liebesbotschaften.", category: "Beziehung" },
+        { text: "Gib deinem Partner einen 6-Sekunden-Kuss.", category: "Beziehung" },
+        { text: "Spiele das Lieblingslied deines Partners.", category: "Beziehung" },
+
+        // Kinder
+        { text: "Materialien mit anderen Kindern teilen.", category: "Kinder" },
+        { text: "Einem anderen Kind ein Geschenk basteln.", category: "Kinder" },
+        { text: "Den Eltern das Frühstück ans Bett bringen.", category: "Kinder" },
+        { text: "Mit dem Hund der Nachbarn Gassi gehen.", category: "Kinder" },
+        { text: "Den Nachbarn anbieten, den Rasen zu mähen.", category: "Kinder" },
+        { text: "Ein Bild für die Grosseltern malen.", category: "Kinder" },
+        { text: "Sich bei einem Mitschüler für Hilfe bedanken.", category: "Kinder" },
+        { text: "Einem Lehrer einen Apfel mitbringen.", category: "Kinder" },
+        { text: "Freunden sagen, was man an ihnen mag.", category: "Kinder" },
+        { text: "Den Eltern beim Kochen helfen.", category: "Kinder" },
+        { text: "Das Zimmer unaufgefordert aufräumen.", category: "Kinder" },
+        { text: "Eine Blumenkette für einen Freund flechten.", category: "Kinder" },
+        { text: "Das Pausenbrot teilen.", category: "Kinder" },
+        { text: "Einem Schüler Nachhilfe geben.", category: "Kinder" },
+        { text: "Einen Schüler zum Mittagessen einladen.", category: "Kinder" }
+    ];
+
+    function generateAct() {
+        const categorySelect = document.getElementById('category-select').value;
+        const display = document.getElementById('display-area');
+        
+        let filteredActs = acts;
+        if (categorySelect !== 'all') {
+            filteredActs = acts.filter(act => act.category === categorySelect);
+        }
+
+        if (filteredActs.length === 0) {
+            display.innerText = "Keine Ideen in dieser Kategorie gefunden.";
+            return;
+        }
+
+        const randomIndex = Math.floor(Math.random() * filteredActs.length);
+        const randomAct = filteredActs[randomIndex];
+
+        display.style.opacity = 0;
+        setTimeout(() => {
+            display.innerHTML = `<span>${randomAct.text}</span>`;
+            display.style.opacity = 1;
+        }, 200);
+    }
+
+    function renderList(filterCategory = 'all') {
+        const listContainer = document.getElementById('full-list');
+        listContainer.innerHTML = '';
+        
+        let filteredActs = acts;
+        if (filterCategory !== 'all') {
+            filteredActs = acts.filter(act => act.category === filterCategory);
+        }
+
+        if (filteredActs.length === 0) {
+            listContainer.innerHTML = '<p>Keine Einträge für diese Kategorie gefunden.</p>';
+            return;
+        }
+
+        filteredActs.forEach(act => {
+            const card = document.createElement('div');
+            card.className = 'act-card';
+            card.innerHTML = `
+                <span class="category-tag">${act.category}</span>
+                <p>${act.text}</p>
+            `;
+            listContainer.appendChild(card);
+        });
+    }
+
+    // Initial render
+    renderList();
+
+</script>
+
+</body>
+</html>
