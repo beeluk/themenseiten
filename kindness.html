@@ -82,10 +82,10 @@
         }
 
         .act-display {
-            font-size: 1.5rem;
+            font-size: 1.35rem; /* Etwas kleiner für längere gegenderte Texte */
             font-weight: bold;
             color: var(--secondary);
-            min-height: 100px;
+            min-height: 120px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -222,7 +222,7 @@
             <select id="category-select">
                 <option value="all">Alle Kategorien (Überraschung)</option>
                 <option value="Fremde">Für Fremde</option>
-                <option value="Freunde">Für Freunde</option>
+                <option value="Freunde">Für Freund:innen</option>
                 <option value="Umwelt">Für die Umwelt</option>
                 <option value="Arbeit">Bei der Arbeit</option>
                 <option value="Beziehung">In der Beziehung</option>
@@ -245,7 +245,7 @@
                 <select id="list-filter" onchange="renderList(this.value)">
                     <option value="all">Alle anzeigen</option>
                     <option value="Fremde">Für Fremde</option>
-                    <option value="Freunde">Für Freunde</option>
+                    <option value="Freunde">Für Freund:innen</option>
                     <option value="Umwelt">Für die Umwelt</option>
                     <option value="Arbeit">Bei der Arbeit</option>
                     <option value="Beziehung">In der Beziehung</option>
@@ -266,11 +266,11 @@
 </footer>
 
 <script>
-    // Datenbank aller Taten aus dem PDF
-    // Rechtschreibung: "ss" statt "ß"
+    // Datenbank aller Taten
+    // Anpassungen: ss statt ß UND Gendern mit Doppelpunkt (Mitarbeiter:in etc.)
     const acts = [
         // Fremde
-        { text: "Mache einem Fremden ein aufrichtiges Kompliment.", category: "Fremde" },
+        { text: "Mache einem:r Fremden ein aufrichtiges Kompliment.", category: "Fremde" },
         { text: "Halte die Türen für jemanden auf.", category: "Fremde" },
         { text: "Lass am Kassenautomaten ein paar Münzen liegen.", category: "Fremde" },
         { text: "Lass jemanden in der Schlange vor.", category: "Fremde" },
@@ -280,26 +280,26 @@
         { text: "Nimm an einer Spendenaktion teil.", category: "Fremde" },
         { text: "Spende deine alte Kleidung.", category: "Fremde" },
         { text: "Hilf einem älteren Menschen beim Einkaufen.", category: "Fremde" },
-        { text: "Zeige jemanden, der neu in deiner Nachbarschaft ist, deine Lieblingsorte.", category: "Fremde" },
+        { text: "Zeige jemandem, der neu in deiner Nachbarschaft ist, deine Lieblingsorte.", category: "Fremde" },
         { text: "Verbringe einen Tag in einem Obdachlosenheim.", category: "Fremde" },
         { text: "Verteile an einem heissen Tag kalte Getränke an ältere Menschen.", category: "Fremde" },
         { text: "Hilf einem Kind oder einer älteren Person über die Strasse.", category: "Fremde" },
-        { text: "Hinterlasse dem Kellner ein saftiges Trinkgeld.", category: "Fremde" },
+        { text: "Hinterlasse dem:r Kellner:in ein saftiges Trinkgeld.", category: "Fremde" },
         { text: "Halte den Aufzug für jemanden auf.", category: "Fremde" },
         { text: "Schicke Malbücher an kranke Kinder im Krankenhaus.", category: "Fremde" },
         { text: "Hilf kranken Tieren, ein Zuhause zu finden.", category: "Fremde" },
-        { text: "Beschenke jemandem mit etwas Selbstgemachten.", category: "Fremde" },
+        { text: "Beschenke jemandem mit etwas Selbstgemachtem.", category: "Fremde" },
         { text: "Hinterlasse Kleingeld auf einem Wunschbrunnen.", category: "Fremde" },
         { text: "Spende deine Haare nach einem Haarschnitt.", category: "Fremde" },
-        { text: "Gib deinen Regenschirm einem Fremden.", category: "Fremde" },
-        { text: "Kaufe deinem Kellner/ deiner Kellnerin ein Dessert.", category: "Fremde" },
+        { text: "Gib deinen Regenschirm einem:r Fremden.", category: "Fremde" },
+        { text: "Kaufe deinem:r Kellner:in ein Dessert.", category: "Fremde" },
         { text: "Kaufe Lebensmittel für die Person hinter dir.", category: "Fremde" },
         { text: "Verstecke kleine nette Botschaften an zufälligen Orten.", category: "Fremde" },
         { text: "Löse ein extra U-Bahn-Ticket und lasse es im Ausgabefach liegen.", category: "Fremde" },
         { text: "Hinterlasse online eine positive Bewertung für ein Restaurant.", category: "Fremde" },
         { text: "Mache ein Kompliment zu einem Foto auf Social Media.", category: "Fremde" },
         { text: "Schaufel den Schnee vom Bürgersteig in deiner Nachbarschaft.", category: "Fremde" },
-        { text: "Biete an, den Rasen für einen älteren Nachbarn zu mähen.", category: "Fremde" },
+        { text: "Biete an, den Rasen für eine:n ältere:n Nachbar:in zu mähen.", category: "Fremde" },
         { text: "Gib deinen Sitzplatz im Flugzeug auf, damit ein Paar zusammensitzen kann.", category: "Fremde" },
         { text: "Sprich auf einer Party mit jemandem, der niemanden zu kennen scheint.", category: "Fremde" },
         { text: "Lade jemanden, der neu in der Stadt ist, zu einem Event ein.", category: "Fremde" },
@@ -307,29 +307,29 @@
         { text: "Spende unbenutzte Gegenstände für wohltätige Zwecke.", category: "Fremde" },
         { text: "Packe ein Pflegeset (Zahnbürste, Socken) für Obdachlose.", category: "Fremde" },
         { text: "Schicke eine E-Mail an eine ehemalige Lehrperson und danke ihr.", category: "Fremde" },
-        { text: "Hinterlasse einen Dankesbrief für deinen Postboten.", category: "Fremde" },
+        { text: "Hinterlasse einen Dankesbrief für deine:n Postbot:in.", category: "Fremde" },
         { text: "Mache eine doppelte Portion Essen für jemanden in Not.", category: "Fremde" },
-        { text: "Werde Organspender.", category: "Fremde" },
+        { text: "Werde Organspender:in.", category: "Fremde" },
         { text: "Schenke einer fremden Person ein Lächeln.", category: "Fremde" },
         { text: "Spende Essen ans Tierheim.", category: "Fremde" },
 
-        // Freunde
-        { text: "Triff dich mit alten Freunden.", category: "Freunde" },
-        { text: "Biete einem Freund an, ihn nach Hause zu fahren.", category: "Freunde" },
-        { text: "Schenke einem Freund ein Buch, das dich inspiriert hat.", category: "Freunde" },
-        { text: "Schicke einem guten Freund einen Brief statt einer SMS.", category: "Freunde" },
-        { text: "Bringe einer Freundin, die ein Baby bekommen hat, Abendessen.", category: "Freunde" },
-        { text: "Bringe einem Freund ein kleines Geschenk mit.", category: "Freunde" },
-        { text: "Erinnere einen alten Freund an eine schöne gemeinsame Erfahrung.", category: "Freunde" },
-        { text: "Babysitte umsonst bei Freunden.", category: "Freunde" },
+        // Freunde (Freund:innen)
+        { text: "Triff dich mit alten Freund:innen.", category: "Freunde" },
+        { text: "Biete einem:r Freund:in an, ihn:sie nach Hause zu fahren.", category: "Freunde" },
+        { text: "Schenke einem:r Freund:in ein Buch, das dich inspiriert hat.", category: "Freunde" },
+        { text: "Schicke einem:r guten Freund:in einen Brief statt einer SMS.", category: "Freunde" },
+        { text: "Bringe einer Freundin, die ein Baby bekommen hat, Abendessen.", category: "Freunde" }, // Hier spezifisch Mutter gelassen, aber optional Freund:in
+        { text: "Bringe einem:r Freund:in ein kleines Geschenk mit.", category: "Freunde" },
+        { text: "Erinnere eine:n alte:n Freund:in an eine schöne gemeinsame Erfahrung.", category: "Freunde" },
+        { text: "Babysitte umsonst bei Freund:innen.", category: "Freunde" },
         { text: "Schreibe eine handgeschriebene Dankeskarte.", category: "Freunde" },
-        { text: "Schreibe eine Liste mit Dingen, die du an einem Freund bewunderst.", category: "Freunde" },
+        { text: "Schreibe eine Liste mit Dingen, die du an einem:r Freund:in bewunderst.", category: "Freunde" },
         { text: "Plane eine Überraschungsgeburtstagsfeier.", category: "Freunde" },
-        { text: "Sage einem Freund, was du an ihm besonders schätzt.", category: "Freunde" },
+        { text: "Sage einem:r Freund:in, was du an ihr:ihm besonders schätzt.", category: "Freunde" },
         { text: "Stelle zwei Menschen vor, die sich gut verstehen würden.", category: "Freunde" },
-        { text: "Lade einen Freund zum Mittagessen ein.", category: "Freunde" },
-        { text: "Sag einem guten Freund Danke dafür, dass es ihn gibt.", category: "Freunde" },
-        { text: "Schicke Freunden eine Musikempfehlung.", category: "Freunde" },
+        { text: "Lade eine:n Freund:in zum Mittagessen ein.", category: "Freunde" },
+        { text: "Sag einem:r guten Freund:in Danke dafür, dass es ihn:sie gibt.", category: "Freunde" },
+        { text: "Schicke Freund:innen eine Musikempfehlung.", category: "Freunde" },
 
         // Umwelt
         { text: "Sammle Müll am Strand oder im Wald auf.", category: "Umwelt" },
@@ -345,54 +345,54 @@
         { text: "Giesse im Sommer Bäume, die mit Wassermangel kämpfen.", category: "Umwelt" },
 
         // Arbeit
-        { text: "Sag deinen Kollegen Danke für ihre Arbeit.", category: "Arbeit" },
-        { text: "Spende einen Krankheitstag für Kollegen mit chronischer Krankheit.", category: "Arbeit" },
-        { text: "Sag deinem Chef, was du an ihm schätzt.", category: "Arbeit" },
-        { text: "Übernimm die Schicht eines Kollegen.", category: "Arbeit" },
-        { text: "Bringe zusätzliche Snacks für Kollegen mit.", category: "Arbeit" },
-        { text: "Schreibe eine Dankeskarte an einen Mitarbeiter.", category: "Arbeit" },
-        { text: "Lade die neue Kollegin zum Mittagessen ein.", category: "Arbeit" },
-        { text: "Erzähl deinem Chef von der grossartigen Arbeit deiner Mitarbeiter.", category: "Arbeit" },
-        { text: "Bring einem Mitarbeiter eine Tasse Kaffee.", category: "Arbeit" },
-        { text: "Hinterlasse einem Arbeitskollegen eine nette Botschaft.", category: "Arbeit" },
+        { text: "Sag deinen Kolleg:innen Danke für ihre Arbeit.", category: "Arbeit" },
+        { text: "Spende einen Krankheitstag für Kolleg:innen mit chronischer Krankheit.", category: "Arbeit" },
+        { text: "Sag deinem:r Chef:in, was du an ihr:ihm schätzt.", category: "Arbeit" },
+        { text: "Übernimm die Schicht eines:r Kolleg:in.", category: "Arbeit" },
+        { text: "Bringe zusätzliche Snacks für Kolleg:innen mit.", category: "Arbeit" },
+        { text: "Schreibe eine Dankeskarte an eine:n Mitarbeitende:n.", category: "Arbeit" },
+        { text: "Lade eine:n neue:n Kolleg:in zum Mittagessen ein.", category: "Arbeit" },
+        { text: "Erzähl deinem:r Chef:in von der grossartigen Arbeit deiner Mitarbeiter:innen.", category: "Arbeit" },
+        { text: "Bring einem:r Mitarbeiter:in eine Tasse Kaffee.", category: "Arbeit" },
+        { text: "Hinterlasse einem:r Arbeitskolleg:in eine nette Botschaft.", category: "Arbeit" },
         { text: "Backe Kekse oder einen Kuchen für alle.", category: "Arbeit" },
         { text: "Biete an, jemandem Arbeit abzunehmen.", category: "Arbeit" },
-        { text: "Schicke eine E-Mail an einen Mentor/Förderer.", category: "Arbeit" },
+        { text: "Schicke eine E-Mail an eine:n Mentor:in/Förderer:in.", category: "Arbeit" },
 
         // Beziehungen
-        { text: "Sag deinem Partner, was du an ihm liebst.", category: "Beziehung" },
+        { text: "Sag deinem:r Partner:in, was du an ihr:ihm liebst.", category: "Beziehung" },
         { text: "Teile deine Beobachtungen über liebenswerte Kleinigkeiten.", category: "Beziehung" },
-        { text: "Mach deinem Partner Komplimente.", category: "Beziehung" },
-        { text: "Hilf deinem Partner, die Lebensmittel wegzuräumen.", category: "Beziehung" },
-        { text: "Kaufe deinem Partner etwas, das er sich gewünscht hat.", category: "Beziehung" },
-        { text: "Kümmere dich um Aufgaben, damit dein Partner entspannen kann.", category: "Beziehung" },
-        { text: "Hilf deinem Partner bei der Verwirklichung seiner Träume.", category: "Beziehung" },
-        { text: "Koche das Lieblingsgericht deines Partners.", category: "Beziehung" },
+        { text: "Mach deinem:r Partner:in Komplimente.", category: "Beziehung" },
+        { text: "Hilf deinem:r Partner:in, die Lebensmittel wegzuräumen.", category: "Beziehung" },
+        { text: "Kaufe deinem:r Partner:in etwas, das sie:er sich gewünscht hat.", category: "Beziehung" },
+        { text: "Kümmere dich um Aufgaben, damit dein:e Partner:in entspannen kann.", category: "Beziehung" },
+        { text: "Hilf deinem:r Partner:in bei der Verwirklichung der Träume.", category: "Beziehung" },
+        { text: "Koche das Lieblingsgericht deines:r Partner:in.", category: "Beziehung" },
         { text: "Nimm dir Zeit, wirklich zuzuhören.", category: "Beziehung" },
         { text: "Sag Danke für Alltägliches.", category: "Beziehung" },
         { text: "Plane ein Date.", category: "Beziehung" },
-        { text: "Gib deinem Partner eine kleine Massage.", category: "Beziehung" },
-        { text: "Schenke deinem Partner eine lange Umarmung.", category: "Beziehung" },
+        { text: "Gib deinem:r Partner:in eine kleine Massage.", category: "Beziehung" },
+        { text: "Schenke deinem:r Partner:in eine lange Umarmung.", category: "Beziehung" },
         { text: "Schreibe kleine Liebesbotschaften.", category: "Beziehung" },
-        { text: "Gib deinem Partner einen 6-Sekunden-Kuss.", category: "Beziehung" },
-        { text: "Spiele das Lieblingslied deines Partners.", category: "Beziehung" },
+        { text: "Gib deinem:r Partner:in einen 6-Sekunden-Kuss.", category: "Beziehung" },
+        { text: "Spiele das Lieblingslied deines:r Partner:in.", category: "Beziehung" },
 
         // Kinder
         { text: "Materialien mit anderen Kindern teilen.", category: "Kinder" },
         { text: "Einem anderen Kind ein Geschenk basteln.", category: "Kinder" },
         { text: "Den Eltern das Frühstück ans Bett bringen.", category: "Kinder" },
-        { text: "Mit dem Hund der Nachbarn Gassi gehen.", category: "Kinder" },
-        { text: "Den Nachbarn anbieten, den Rasen zu mähen.", category: "Kinder" },
+        { text: "Mit dem Hund der Nachbar:innen Gassi gehen.", category: "Kinder" },
+        { text: "Den Nachbar:innen anbieten, den Rasen zu mähen.", category: "Kinder" },
         { text: "Ein Bild für die Grosseltern malen.", category: "Kinder" },
-        { text: "Sich bei einem Mitschüler für Hilfe bedanken.", category: "Kinder" },
-        { text: "Einem Lehrer einen Apfel mitbringen.", category: "Kinder" },
-        { text: "Freunden sagen, was man an ihnen mag.", category: "Kinder" },
+        { text: "Sich bei einem:r Mitschüler:in für Hilfe bedanken.", category: "Kinder" },
+        { text: "Einem:r Lehrer:in einen Apfel mitbringen.", category: "Kinder" },
+        { text: "Freund:innen sagen, was man an ihnen mag.", category: "Kinder" },
         { text: "Den Eltern beim Kochen helfen.", category: "Kinder" },
         { text: "Das Zimmer unaufgefordert aufräumen.", category: "Kinder" },
-        { text: "Eine Blumenkette für einen Freund flechten.", category: "Kinder" },
+        { text: "Eine Blumenkette für eine:n Freund:in flechten.", category: "Kinder" },
         { text: "Das Pausenbrot teilen.", category: "Kinder" },
-        { text: "Einem Schüler Nachhilfe geben.", category: "Kinder" },
-        { text: "Einen Schüler zum Mittagessen einladen.", category: "Kinder" }
+        { text: "Einem:r Schüler:in Nachhilfe geben.", category: "Kinder" },
+        { text: "Eine:n Schüler:in zum Mittagessen einladen.", category: "Kinder" }
     ];
 
     function generateAct() {
