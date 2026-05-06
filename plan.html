@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Zeitplan</title>
+<style>
+  body { font-family: Arial, Helvetica, sans-serif; margin: 20px; background-color: #f9f9f9; color: #333; }
+  h1 { color: #0056b3; }
+  #container { max-width: 800px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+  select { padding: 10px; margin: 10px 0 20px 0; width: 100%; border: 1px solid #ccc; border-radius: 4px; font-size: 16px; }
+  table { width: 100%; border-spacing: 0; margin-top: 10px; }
+  th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+  th { background-color: #0056b3; color: white; }
+  tr:nth-of-type(even) { background-color: #f2f2f2; }
+  #tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+  div[data-type="tab"] { padding: 10px 20px; cursor: pointer; background: #e0e0e0; border-radius: 4px; font-weight: bold; }
+  div[data-active="true"] { background: #0056b3; color: white; }
+  #view-uebersicht img { max-width: 100%; height: auto; border: 1px solid #ccc; }
+</style>
+</head>
+<body>
+<div id="container">
+  <h1>Koordinationsdialoge</h1>
+  
+  <div id="tabs">
+    <div data-type="tab" data-active="true" id="tab-klasse" onclick="wechsleTab('klasse')">Nach Klasse</div>
+    <div data-type="tab" data-active="false" id="tab-kg" onclick="wechsleTab('kg')">Nach Kindergarten</div>
+    <div data-type="tab" data-active="false" id="tab-uebersicht" onclick="wechsleTab('uebersicht')">Gesamtübersicht</div>
+  </div>
+
+  <div id="view-klasse">
+    <label for="klasse-select">Wähle eine Klasse:</label>
+    <select id="klasse-select" onchange="zeigeKlasse()">
+      <option value="">-- Bitte wählen --</option>
+      <option value="1a">Klasse 1a</option>
+      <option value="1b">Klasse 1b</option>
+      <option value="1c">Klasse 1c</option>
+      <option value="1d">Klasse 1d</option>
+      <option value="1e">Klasse 1e</option>
+    </select>
+    <div id="output-klasse"></div>
+  </div>
+
+  <div id="view-kg" style="display:none;">
+    <label for="kg-select">Wähle einen Kindergarten:</label>
+    <select id="kg-select" onchange="zeigeKG()">
+      <option value="">-- Bitte wählen --</option>
+    </select>
+    <div id="output-kg"></div>
+  </div>
+
+  <div id="view-uebersicht" style="display:none;">
+    <!-- Passe hier den Dateinamen an, falls dein Bild anders heisst -->
+    <img src="zeitplan.jpg" alt="Gesamtübersicht der Koordinationsgespräche">
+  </div>
+
+</div>
+
+<script>
+const daten = {
+  "klassen": {
+    "1a": [
+      {"zeit": "16:30 - 16:40", "ort": "Neufeld 1", "dauer": 10},
+      {"zeit": "16:40 - 16:55", "ort": "Depot 2", "dauer": 15},
+      {"zeit": "16:55 - 17:05", "ort": "Depot 1", "dauer": 10},
+      {"zeit": "17:05 - 17:15", "ort": "Neufeld 3", "dauer": 10},
+      {"zeit": "17:15 - 17:25", "ort": "Türmli", "dauer": 10},
+      {"zeit": "17:25 - 17:35", "ort": "Neufeld 2", "dauer": 10},
+      {"zeit": "17:35 - 17:45", "ort": "Depot 3", "dauer": 10}
+    ],
+    "1b": [
+      {"zeit": "16:40 - 16:55", "ort": "Neufeld 1", "dauer": 15},
+      {"zeit": "16:55 - 17:05", "ort": "Neufeld 3", "dauer": 10},
+      {"zeit": "17:05 - 17:15", "ort": "Hochfeld 4", "dauer": 10},
+      {"zeit": "17:15 - 17:25", "ort": "Hochfeld 3", "dauer": 10},
+      {"zeit": "17:25 - 17:35", "ort": "Bonstetten", "dauer": 10},
+      {"zeit": "17:35 - 17:45", "ort": "Hochfeld 1", "dauer": 10},
+      {"zeit": "17:45 - 18:00", "ort": "Türmli", "dauer": 15}
+    ],
+    "1c": [
+      {"zeit": "16:40 - 16:50", "ort": "Neufeld 3", "dauer": 10},
+      {"zeit": "16:50 - 17:00", "ort": "Hochfeld 2", "dauer": 10},
+      {"zeit": "17:00 - 17:15", "ort": "Hochfeld 3", "dauer": 15},
+      {"zeit": "17:15 - 17:25", "ort": "Hochfeld 4", "dauer": 10},
+      {"zeit": "17:25 - 17:35", "ort": "Türmli", "dauer": 10},
+      {"zeit": "17:35 - 17:45", "ort": "Neufeld 2", "dauer": 10},
+      {"zeit": "17:45 - 17:55", "ort": "Bonstetten", "dauer": 10}
+    ],
+    "1d": [
+      {"zeit": "16:35 - 16:45", "ort": "Hochfeld 2", "dauer": 10},
+      {"zeit": "16:45 - 16:55", "ort": "Hochfeld 3", "dauer": 10},
+      {"zeit": "16:55 - 17:05", "ort": "Neufeld 1", "dauer": 10},
+      {"zeit": "17:05 - 17:15", "ort": "Türmli", "dauer": 10},
+      {"zeit": "17:15 - 17:25", "ort": "Neufeld 2", "dauer": 10},
+      {"zeit": "17:25 - 17:35", "ort": "Hochfeld 4", "dauer": 10},
+      {"zeit": "17:35 - 17:45", "ort": "Bonstetten", "dauer": 10},
+      {"zeit": "17:45 - 17:55", "ort": "Hochfeld 1", "dauer": 10}
+    ],
+    "1e": [
+      {"zeit": "16:45 - 16:55", "ort": "Depot 1", "dauer": 10},
+      {"zeit": "16:55 - 17:10", "ort": "Depot 2", "dauer": 15},
+      {"zeit": "17:10 - 17:25", "ort": "Depot 3", "dauer": 15},
+      {"zeit": "17:25 - 17:35", "ort": "Hochfeld 1", "dauer": 10},
+      {"zeit": "17:35 - 17:45", "ort": "Hochfeld 4", "dauer": 10}
+    ]
+  },
+  "kindergaerten": {
+    "Bonstetten": [
+      {"zeit": "17:25 - 17:35", "ort": "1b"},
+      {"zeit": "17:35 - 17:45", "ort": "1d"},
+      {"zeit": "17:45 - 17:55", "ort": "1c"}
+    ],
+    "Depot 1": [
+      {"zeit": "16:45 - 16:55", "ort": "1e"},
+      {"zeit": "16:55 - 17:05", "ort": "1a"}
+    ],
+    "Depot 2": [
+      {"zeit": "16:40 - 16:55", "ort": "1a"},
+      {"zeit": "16:55 - 17:10", "ort": "1e"}
+    ],
+    "Depot 3": [
+      {"zeit": "17:10 - 17:25", "ort": "1e"},
+      {"zeit": "17:35 - 17:45", "ort": "1a"}
+    ],
+    "Hochfeld 1": [
+      {"zeit": "17:25 - 17:35", "ort": "1e"},
+      {"zeit": "17:35 - 17:45", "ort": "1b"},
+      {"zeit": "17:45 - 17:55", "ort": "1d"}
+    ],
+    "Hochfeld 2": [
+      {"zeit": "16:35 - 16:45", "ort": "1d"},
+      {"zeit": "16:50 - 17:00", "ort": "1c"}
+    ],
+    "Hochfeld 3": [
+      {"zeit": "16:45 - 16:55", "ort": "1d"},
+      {"zeit": "17:00 - 17:15", "ort": "1c"},
+      {"zeit": "17:15 - 17:25", "ort": "1b"}
+    ],
+    "Hochfeld 4": [
+      {"zeit": "17:05 - 17:15", "ort": "1b"},
+      {"zeit": "17:15 - 17:25", "ort": "1c"},
+      {"zeit": "17:25 - 17:35", "ort": "1d"},
+      {"zeit": "17:35 - 17:45", "ort": "1e"}
+    ],
+    "Neufeld 1": [
+      {"zeit": "16:30 - 16:40", "ort": "1a"},
+      {"zeit": "16:40 - 16:55", "ort": "1b"},
+      {"zeit": "16:55 - 17:05", "ort": "1d"}
+    ],
+    "Neufeld 2": [
+      {"zeit": "17:15 - 17:25", "ort": "1d"},
+      {"zeit": "17:25 - 17:35", "ort": "1a"},
+      {"zeit": "17:35 - 17:45", "ort": "1c"}
+    ],
+    "Neufeld 3": [
+      {"zeit": "16:40 - 16:50", "ort": "1c"},
+      {"zeit": "16:55 - 17:05", "ort": "1b"},
+      {"zeit": "17:05 - 17:15", "ort": "1a"}
+    ],
+    "Türmli": [
+      {"zeit": "17:05 - 17:15", "ort": "1d"},
+      {"zeit": "17:15 - 17:25", "ort": "1a"},
+      {"zeit": "17:25 - 17:35", "ort": "1c"},
+      {"zeit": "17:45 - 18:00", "ort": "1b"}
+    ]
+  }
+};
+
+const kgSelectBox = document.getElementById('kg-select');
+const alleKGs = Object.keys(daten.kindergaerten);
+for (let i = 0; i < alleKGs.length; i++) {
+  let option = document.createElement('option');
+  option.value = alleKGs[i];
+  option.innerHTML = alleKGs[i];
+  kgSelectBox.appendChild(option);
+}
+
+function wechsleTab(tabName) {
+  document.getElementById('tab-klasse').setAttribute('data-active', 'false');
+  document.getElementById('tab-kg').setAttribute('data-active', 'false');
+  document.getElementById('tab-uebersicht').setAttribute('data-active', 'false');
+  
+  document.getElementById('tab-' + tabName).setAttribute('data-active', 'true');
+  
+  document.getElementById('view-klasse').style.display = 'none';
+  document.getElementById('view-kg').style.display = 'none';
+  document.getElementById('view-uebersicht').style.display = 'none';
+
+  document.getElementById('view-' + tabName).style.display = 'block';
+}
+
+function zeigeKlasse() {
+  const wert = document.getElementById('klasse-select').value;
+  const ausgabe = document.getElementById('output-klasse');
+  if (!wert) {
+    ausgabe.innerHTML = '';
+    return;
+  }
+  const elemente = daten.klassen[wert];
+  let htmlString = '<table><tr><th>Zeit</th><th>Kindergarten</th><th>Dauer</th></tr>';
+  for (let i = 0; i < elemente.length; i++) {
+    htmlString += '<tr><td>' + elemente[i].zeit + ' Uhr</td><td>' + elemente[i].ort + '</td><td>' + elemente[i].dauer + ' Min.</td></tr>';
+  }
+  htmlString += '</table>';
+  ausgabe.innerHTML = htmlString;
+}
+
+function zeigeKG() {
+  const wert = document.getElementById('kg-select').value;
+  const ausgabe = document.getElementById('output-kg');
+  if (!wert) {
+    ausgabe.innerHTML = '';
+    return;
+  }
+  const elemente = daten.kindergaerten[wert];
+  let htmlString = '<table><tr><th>Zeit</th><th>Raum / Klasse</th></tr>';
+  for (let i = 0; i < elemente.length; i++) {
+    htmlString += '<tr><td>' + elemente[i].zeit + ' Uhr</td><td>bei ' + elemente[i].ort + '</td></tr>';
+  }
+  htmlString += '</table>';
+  ausgabe.innerHTML = htmlString;
+}
+</script>
+</body>
+</html>
