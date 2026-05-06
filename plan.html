@@ -213,7 +213,7 @@ function zeigeKG() {
     return;
   }
   const elemente = daten.kindergaerten[wert];
-  let htmlString = '<table><tr><th>Zeit</th><th>Raum / Klasse</th></tr>';
+  let htmlString = '<table><tr><th>Zeit</th><th>Klasse</th></tr>';
   for (let i = 0; i < elemente.length; i++) {
     htmlString += '<tr><td>' + elemente[i].zeit + ' Uhr</td><td>bei ' + elemente[i].ort + '</td></tr>';
   }
