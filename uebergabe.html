@@ -185,6 +185,7 @@ function zeigeAbgebende() {
   const elemente = daten.abgebende[wert];
   let htmlString = '<table><tr><th>Zeit</th><th>Zielklasse</th><th>Anzahl Kinder</th><th>Dauer</th></tr>';
   for (let i = 0; i < elemente.length; i++) {
+    htmlString += '<tr><td>' + elemente[i].zeit + ' Uhr</td><td>' + elemente[i].ort + '</td><td>' + elemente[i].kinder + '</td><td>' + elemente[i].dauer + ' Min.</td></tr>';
   }
   htmlString += '</table>';
   ausgabe.innerHTML = htmlString;
