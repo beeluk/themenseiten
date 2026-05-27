@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Übergabegespräche 1. Juni 2026</title>
+<style>
+  body { font-family: Arial, Helvetica, sans-serif; margin: 20px; background-color: #f9f9f9; color: #333; }
+  h1 { color: #0056b3; }
+  #container { max-width: 800px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+  select { padding: 10px; margin: 10px 0 20px 0; width: 100%; border: 1px solid #ccc; border-radius: 4px; font-size: 16px; }
+  table { width: 100%; border-spacing: 0; margin-top: 10px; }
+  th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+  th { background-color: #0056b3; color: white; }
+  tr:nth-of-type(even) { background-color: #f2f2f2; }
+  #tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+  div[data-type="tab"] { padding: 10px 20px; cursor: pointer; background: #e0e0e0; border-radius: 4px; font-weight: bold; }
+  div[data-active="true"] { background: #0056b3; color: white; }
+  #view-uebersicht img { max-width: 100%; height: auto; border: 1px solid #ccc; display: block; margin: 0 auto; }
+</style>
+</head>
+<body>
+<div id="container">
+  <h1>Übergabegespräche 1. Juni 2026</h1>
+  
+  <div id="tabs">
+    <div data-type="tab" data-active="true" id="tab-abgebende" onclick="wechsleTab('abgebende')">2. Klasse / Basisstufe</div>
+    <div data-type="tab" data-active="false" id="tab-klasse3" onclick="wechsleTab('klasse3')">3. Klasse</div>
+    <div data-type="tab" data-active="false" id="tab-uebersicht" onclick="wechsleTab('uebersicht')">Übersicht</div>
+  </div>
+
+  <div id="view-abgebende">
+    <label for="abgebende-select">Wähle eine 2. Klasse oder Basisstufe:</label>
+    <select id="abgebende-select" onchange="zeigeAbgebende()">
+      <option value="">-- Bitte wählen --</option>
+    </select>
+    <div id="output-abgebende"></div>
+  </div>
+
+  <div id="view-klasse3" style="display:none;">
+    <label for="klasse3-select">Wähle eine 3. Klasse:</label>
+    <select id="klasse3-select" onchange="zeigeKlasse3()">
+      <option value="">-- Bitte wählen --</option>
+      <option value="3a">Klasse 3a</option>
+      <option value="3b">Klasse 3b</option>
+      <option value="3c">Klasse 3c</option>
+      <option value="3d">Klasse 3d</option>
+      <option value="3e">Klasse 3e</option>
+      <option value="3f">Klasse 3f</option>
+    </select>
+    <div id="output-klasse3"></div>
+  </div>
+
+  <div id="view-uebersicht" style="display:none;">
+    <img src="plan.jpg" alt="Gesamtübersicht der Übergabegespräche">
+  </div>
+
+</div>
+
+<script>
+const daten = {
+  "klassen3": {
+    "3a": [
+      {"zeit": "16:40 - 16:50", "ort": "BS2M", "kinder": 2, "dauer": 10},
+      {"zeit": "16:50 - 17:10", "ort": "2e", "kinder": 6, "dauer": 20},
+      {"zeit": "17:10 - 17:20", "ort": "BS1M", "kinder": 2, "dauer": 10},
+      {"zeit": "17:20 - 17:45", "ort": "2a", "kinder": 7, "dauer": 25}
+    ],
+    "3b": [
+      {"zeit": "16:30 - 16:40", "ort": "2d", "kinder": 2, "dauer": 10},
+      {"zeit": "16:40 - 17:00", "ort": "2b", "kinder": 6, "dauer": 20},
+      {"zeit": "17:00 - 17:15", "ort": "2a", "kinder": 4, "dauer": 15},
+      {"zeit": "17:15 - 17:40", "ort": "2c", "kinder": 7, "dauer": 25}
+    ],
+    "3c": [
+      {"zeit": "16:30 - 16:50", "ort": "2c", "kinder": 6, "dauer": 20},
+      {"zeit": "16:50 - 17:00", "ort": "2a", "kinder": 3, "dauer": 10},
+      {"zeit": "17:00 - 17:30", "ort": "2d", "kinder": 9, "dauer": 30}
+    ],
+    "3d": [
+      {"zeit": "16:45 - 17:00", "ort": "2d", "kinder": 4, "dauer": 15},
+      {"zeit": "17:00 - 17:40", "ort": "2b", "kinder": 13, "dauer": 40},
+      {"zeit": "17:40 - 17:50", "ort": "2c", "kinder": 2, "dauer": 10}
+    ],
+    "3e": [
+      {"zeit": "16:55 - 17:15", "ort": "2c", "kinder": 6, "dauer": 20},
+      {"zeit": "17:15 - 17:30", "ort": "BSH", "kinder": 4, "dauer": 15},
+      {"zeit": "17:30 - 17:50", "ort": "2d", "kinder": 6, "dauer": 20},
+      {"zeit": "17:50 - 18:00", "ort": "2b", "kinder": 3, "dauer": 10}
+    ],
+    "3f": [
+      {"zeit": "16:30 - 16:50", "ort": "2a", "kinder": 6, "dauer": 20},
+      {"zeit": "16:50 - 17:00", "ort": "BS2M", "kinder": 3, "dauer": 10},
+      {"zeit": "17:00 - 17:10", "ort": "BS1M", "kinder": 1, "dauer": 10},
+      {"zeit": "17:10 - 17:45", "ort": "2e", "kinder": 11, "dauer": 35}
+    ]
+  },
+  "abgebende": {
+    "2a": [
+      {"zeit": "16:30 - 16:50", "ort": "Klasse 3f", "kinder": 6, "dauer": 20},
+      {"zeit": "16:50 - 17:00", "ort": "Klasse 3c", "kinder": 3, "dauer": 10},
+      {"zeit": "17:00 - 17:15", "ort": "Klasse 3b", "kinder": 4, "dauer": 15},
+      {"zeit": "17:20 - 17:45", "ort": "Klasse 3a", "kinder": 7, "dauer": 25}
+    ],
+    "2b": [
+      {"zeit": "16:40 - 17:00", "ort": "Klasse 3b", "kinder": 6, "dauer": 20},
+      {"zeit": "17:00 - 17:40", "ort": "Klasse 3d", "kinder": 13, "dauer": 40},
+      {"zeit": "17:50 - 18:00", "ort": "Klasse 3e", "kinder": 3, "dauer": 10}
+    ],
+    "2c": [
+      {"zeit": "16:30 - 16:50", "ort": "Klasse 3c", "kinder": 6, "dauer": 20},
+      {"zeit": "16:55 - 17:15", "ort": "Klasse 3e", "kinder": 6, "dauer": 20},
+      {"zeit": "17:15 - 17:40", "ort": "Klasse 3b", "kinder": 7, "dauer": 25},
+      {"zeit": "17:40 - 17:50", "ort": "Klasse 3d", "kinder": 2, "dauer": 10}
+    ],
+    "2d": [
+      {"zeit": "16:30 - 16:40", "ort": "Klasse 3b", "kinder": 2, "dauer": 10},
+      {"zeit": "16:45 - 17:00", "ort": "Klasse 3d", "kinder": 4, "dauer": 15},
+      {"zeit": "17:00 - 17:30", "ort": "Klasse 3c", "kinder": 9, "dauer": 30},
+      {"zeit": "17:30 - 17:50", "ort": "Klasse 3e", "kinder": 6, "dauer": 20}
+    ],
+    "2e": [
+      {"zeit": "16:50 - 17:10", "ort": "Klasse 3a", "kinder": 6, "dauer": 20},
+      {"zeit": "17:10 - 17:45", "ort": "Klasse 3f", "kinder": 11, "dauer": 35}
+    ],
+    "BS1M": [
+      {"zeit": "17:00 - 17:10", "ort": "Klasse 3f", "kinder": 1, "dauer": 10},
+      {"zeit": "17:10 - 17:20", "ort": "Klasse 3a", "kinder": 2, "dauer": 10}
+    ],
+    "BS2M": [
+      {"zeit": "16:40 - 16:50", "ort": "Klasse 3a", "kinder": 2, "dauer": 10},
+      {"zeit": "16:50 - 17:00", "ort": "Klasse 3f", "kinder": 3, "dauer": 10}
+    ],
+    "BSH": [
+      {"zeit": "17:15 - 17:30", "ort": "Klasse 3e", "kinder": 4, "dauer": 15}
+    ]
+  }
+};
+
+const abgebendeSelectBox = document.getElementById('abgebende-select');
+const alleAbgebenden = Object.keys(daten.abgebende);
+for (let i = 0; i < alleAbgebenden.length; i++) {
+  let option = document.createElement('option');
+  option.value = alleAbgebenden[i];
+  option.innerHTML = alleAbgebenden[i];
+  abgebendeSelectBox.appendChild(option);
+}
+
+function wechsleTab(tabName) {
+  document.getElementById('tab-abgebende').setAttribute('data-active', 'false');
+  document.getElementById('tab-klasse3').setAttribute('data-active', 'false');
+  document.getElementById('tab-uebersicht').setAttribute('data-active', 'false');
+  
+  document.getElementById('tab-' + tabName).setAttribute('data-active', 'true');
+  
+  document.getElementById('view-abgebende').style.display = 'none';
+  document.getElementById('view-klasse3').style.display = 'none';
+  document.getElementById('view-uebersicht').style.display = 'none';
+
+  document.getElementById('view-' + tabName).style.display = 'block';
+}
+
+function zeigeKlasse3() {
+  const wert = document.getElementById('klasse3-select').value;
+  const ausgabe = document.getElementById('output-klasse3');
+  if (!wert) {
+    ausgabe.innerHTML = '';
+    return;
+  }
+  const elemente = daten.klassen3[wert];
+  let htmlString = '<table><tr><th>Zeit</th><th>Abgebende Klasse / BS</th><th>Anzahl Kinder</th><th>Dauer</th></tr>';
+  for (let i = 0; i < elemente.length; i++) {
+    htmlString += '<tr><td>' + elemente[i].zeit + ' Uhr</td><td>' + elemente[i].ort + '</td><td>' + elemente[i].kinder + '</td><td>' + elemente[i].dauer + ' Min.</td></tr>';
+  }
+  htmlString += '</table>';
+  ausgabe.innerHTML = htmlString;
+}
+
+function zeigeAbgebende() {
+  const wert = document.getElementById('abgebende-select').value;
+  const ausgabe = document.getElementById('output-abgebende');
+  if (!wert) {
+    ausgabe.innerHTML = '';
+    return;
+  }
+  const elemente = daten.abgebende[wert];
+  let htmlString = '<table><tr><th>Zeit</th><th>Zielklasse</th><th>Anzahl Kinder</th><th>Dauer</th></tr>';
+  for (let i = 0; i < elemente.length; i++) {
+  }
+  htmlString += '</table>';
+  ausgabe.innerHTML = htmlString;
+}
+</script>
+</body>
+</html>
